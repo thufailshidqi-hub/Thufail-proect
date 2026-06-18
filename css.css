@@ -1,0 +1,23 @@
+/* Custom Typography for Arabic Text */
+        .txt-ayat {
+            font-family: 'Amiri', serif;
+            /* Ukuran default untuk mobile (lebih kecil) */
+            font-size: 1.35rem; 
+            text-align: justify;
+            text-align-last: right;
+            /* Line height disesuaikan untuk mobile agar lebih rapat */
+            line-height: 2.2; 
+            word-spacing: -2px;
+            direction: rtl;
+            color: #111827;
+            padding: 1rem 0;
+            margin-bottom: 1rem;
+        }
+        
+        /* Penyesuaian untuk layar yang lebih besar (tablet/desktop) */
+        @media (min-width: 768px) {
+            .txt-ayat {
+                font-size: 1.75rem;
+                line-height: 2.5;
+            }
+        }

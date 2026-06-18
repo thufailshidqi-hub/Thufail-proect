@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hadis Digital - Etika Lingkungan</title>
+    <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        
+        /* Custom Typography for Arabic Text */
+        .txt-ayat {
+            font-family: 'Amiri', serif;
+            font-size: 1.35rem; /* Ukuran disesuaikan untuk mobile */
+            text-align: justify;
+            text-align-last: right;
+            line-height: 2.2; /* Line-height disesuaikan untuk mobile */
+            word-spacing: -2px;
+            direction: rtl;
+            color: #111827;
+            padding: 1rem 0;
+            margin-bottom: 1rem;
+        }
+
+        /* Penyesuaian untuk layar yang lebih besar (tablet/desktop) */
+        @media (min-width: 768px) {
+            .txt-ayat {
+                font-size: 1.75rem;
+                line-height: 2.5;
+            }
+        }
+        
+        /* Custom Typography for Translation */
+        .txt-terjemah {
+            text-align: justify;
+            color: #4b5563;
+            font-style: italic;
+            hyphens: auto;
+            line-height: 1.75;
+            font-size: 1.05rem;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #065f46;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #047857;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 antialiased overflow-x-hidden">
+
+    <header class="fixed top-0 left-0 right-0 h-16 bg-emerald-800 text-white shadow-md z-50 flex items-center px-4 md:px-6">
+        <button id="burger-btn" onclick="toggleSidebar(event)" class="md:hidden mr-4 text-white focus:outline-none p-2 rounded-md hover:bg-emerald-700 transition-colors">
+            <i class="fa-solid fa-bars text-xl"></i>
+        </button>
+        <div class="flex items-center gap-3">
+            <div class="bg-white text-emerald-800 p-1.5 rounded-lg">
+                <i class="fa-solid fa-leaf text-xl"></i>
+            </div>
+            <h1 class="text-xl md:text-2xl font-bold tracking-wider">HADIS DIGITAL</h1>
+        </div>
+    </header>
+
+    <aside id="sidebar" class="fixed top-16 left-0 h-[calc(100vh-4rem)] w-72 bg-white shadow-xl z-40 transform -translate-x-full md:translate-x-0 transition-transform duration-300 overflow-y-auto border-r border-gray-100">
+        <nav class="p-4 space-y-2">
+            
+            <button onclick="bukaKonten('page-home')" class="w-full text-left px-4 py-3 rounded-xl text-emerald-900 font-semibold hover:bg-emerald-50 focus:bg-emerald-100 transition-colors flex items-center gap-3">
+                <i class="fa-solid fa-house w-5 text-emerald-600"></i> Beranda
+            </button>
+
+            <div>
+                <button onclick="toggleSubmenu(event, 'menu-daftar-isi')" class="w-full text-left px-4 py-3 rounded-xl text-emerald-900 font-semibold hover:bg-emerald-50 focus:bg-emerald-100 transition-colors flex items-center justify-between">
+                    <span class="flex items-center gap-3"><i class="fa-solid fa-book-open w-5 text-emerald-600"></i> Materi E-Book</span>
+                    <i id="icon-menu-daftar-isi" class="fa-solid fa-chevron-right transition-transform duration-200 text-sm"></i>
+                </button>
+                <div id="menu-daftar-isi" class="hidden pl-6 pr-2 py-2 space-y-3 border-l-2 border-emerald-100 ml-6 mt-1">
+                    
+                    <div>
+                        <button onclick="toggleSubmenu(event, 'menu-bab-a')" class="w-full text-left py-2 text-sm font-bold text-gray-700 hover:text-emerald-700 flex justify-between items-center pr-2">
+                            A. Rahmat Bagi Alam Semesta
+                            <i id="icon-menu-bab-a" class="fa-solid fa-angle-right text-xs transition-transform duration-200"></i>
+                        </button>
+                        <div id="menu-bab-a" class="hidden pl-4 py-1 space-y-1">
+                            <button onclick="bukaKontenDanScroll('page-baba', 'card-a1')" class="w-full text-left py-1.5 text-sm text-gray-500 hover:text-emerald-600 hover:font-medium transition-colors">1. Kesaksian Alam</button>
+                            <button onclick="bukaKontenDanScroll('page-baba', 'card-a2')" class="w-full text-left py-1.5 text-sm text-gray-500 hover:text-emerald-600 hover:font-medium transition-colors">2. Batasan dalam Menilai Takdir</button>
+                        </div>
+                    </div>
+
+                    <div>
+                        <button onclick="toggleSubmenu(event, 'menu-bab-b')" class="w-full text-left py-2 text-sm font-bold text-gray-700 hover:text-emerald-700 flex justify-between items-center pr-2">
+                            B. Keterhubungan Manusia & Alam
+                            <i id="icon-menu-bab-b" class="fa-solid fa-angle-right text-xs transition-transform duration-200"></i>
+                        </button>
+                        <div id="menu-bab-b" class="hidden pl-4 py-1 space-y-1">
+                            <button onclick="bukaKontenDanScroll('page-babb', 'card-b1')" class="w-full text-left py-1.5 text-sm text-gray-500 hover:text-emerald-600 hover:font-medium transition-colors">1. Etika dalam Berbohong</button>
+                            <button onclick="bukaKontenDanScroll('page-babb', 'card-b2')" class="w-full text-left py-1.5 text-sm text-gray-500 hover:text-emerald-600 hover:font-medium transition-colors">2. Tubuh Bicara & Alam Menjawab</button>
+                        </div>
+                    </div>
+
+                    <div>
+                        <button onclick="toggleSubmenu(event, 'menu-bab-c')" class="w-full text-left py-2 text-sm font-bold text-gray-700 hover:text-emerald-700 flex justify-between items-center pr-2">
+                            C. Pepohonan dan Tanaman
+                            <i id="icon-menu-bab-c" class="fa-solid fa-angle-right text-xs transition-transform duration-200"></i>
+                        </button>
+                        <div id="menu-bab-c" class="hidden pl-4 py-1 space-y-1">
+                            <button onclick="bukaKontenDanScroll('page-babc', 'card-c1')" class="w-full text-left py-1.5 text-sm text-gray-500 hover:text-emerald-600 hover:font-medium transition-colors">1. Khasiat Kam’ah & Kurma</button>
+                            <button onclick="bukaKontenDanScroll('page-babc', 'card-c2')" class="w-full text-left py-1.5 text-sm text-gray-500 hover:text-emerald-600 hover:font-medium transition-colors">2. Waras, Qisṭ & Zaitun</button>
+                            <button onclick="bukaKontenDanScroll('page-babc', 'card-c3')" class="w-full text-left py-1.5 text-sm text-gray-500 hover:text-emerald-600 hover:font-medium transition-colors">3. Henna dan Katam</button>
+                            <button onclick="bukaKontenDanScroll('page-babc', 'card-c4')" class="w-full text-left py-1.5 text-sm text-gray-500 hover:text-emerald-600 hover:font-medium transition-colors">4. Itsmid untuk Mata & Rambut</button>
+                        </div>
+                    </div>
+
+                    <div>
+                        <button onclick="toggleSubmenu(event, 'menu-bab-d')" class="w-full text-left py-2 text-sm font-bold text-gray-700 hover:text-emerald-700 flex justify-between items-center pr-2">
+                            D. Ajuan Menanam Tumbuhan
+                            <i id="icon-menu-bab-d" class="fa-solid fa-angle-right text-xs transition-transform duration-200"></i>
+                        </button>
+                        <div id="menu-bab-d" class="hidden pl-4 py-1 space-y-1">
+                            <button onclick="bukaKontenDanScroll('page-babd', 'card-d1')" class="w-full text-left py-1.5 text-sm text-gray-500 hover:text-emerald-600 hover:font-medium transition-colors">1. Keutamaan Menanam</button>
+                            <button onclick="bukaKontenDanScroll('page-babd', 'card-d2')" class="w-full text-left py-1.5 text-sm text-gray-500 hover:text-emerald-600 hover:font-medium transition-colors">2. Manfaatkanlah Tanahmu</button>
+                            <button onclick="bukaKontenDanScroll('page-babd', 'card-d3')" class="w-full text-left py-1.5 text-sm text-gray-500 hover:text-emerald-600 hover:font-medium transition-colors">3. Amanah dalam Bertani</button>
+                        </div>
+                    </div>
+
+                    <div>
+                        <button onclick="toggleSubmenu(event, 'menu-bab-e')" class="w-full text-left py-2 text-sm font-bold text-gray-700 hover:text-emerald-700 flex justify-between items-center pr-2">
+                            E. Kasih Sayang Terhadap Hewan
+                            <i id="icon-menu-bab-e" class="fa-solid fa-angle-right text-xs transition-transform duration-200"></i>
+                        </button>
+                        <div id="menu-bab-e" class="hidden pl-4 py-1 space-y-1">
+                            <button onclick="bukaKontenDanScroll('page-babe', 'card-e1')" class="w-full text-left py-1.5 text-sm text-gray-500 hover:text-emerald-600 hover:font-medium transition-colors">1. Hadiah Kehidupan Rasulullah</button>
+                            <button onclick="bukaKontenDanScroll('page-babe', 'card-e2')" class="w-full text-left py-1.5 text-sm text-gray-500 hover:text-emerald-600 hover:font-medium transition-colors">2. Pahala Menolong Makhluk</button>
+                            <button onclick="bukaKontenDanScroll('page-babe', 'card-e3')" class="w-full text-left py-1.5 text-sm text-gray-500 hover:text-emerald-600 hover:font-medium transition-colors">3. Penyerahan Arnab Disembelih</button>
+                            <button onclick="bukaKontenDanScroll('page-babe', 'card-e4')" class="w-full text-left py-1.5 text-sm text-gray-500 hover:text-emerald-600 hover:font-medium transition-colors">4. Ketentuan tentang Luqatha</button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <button onclick="bukaKonten('page-penulis')" class="w-full text-left px-4 py-3 rounded-xl text-emerald-900 font-semibold hover:bg-emerald-50 focus:bg-emerald-100 transition-colors flex items-center gap-3">
+                <i class="fa-solid fa-user-pen w-5 text-emerald-600"></i> Profil Penulis
+            </button>
+
+        </nav>
+    </aside>
+
+    <main id="main-content" class="md:ml-72 pt-16 p-4 md:p-8 min-h-screen relative">
+
+        <div id="page-home" class="page-content animate-fade-in">
+            <div class="bg-gradient-to-br from-emerald-800 to-teal-900 rounded-3xl p-8 md:p-16 text-white shadow-2xl flex flex-col items-center justify-center min-h-[75vh] text-center relative overflow-hidden">
+                <div class="absolute top-0 left-0 w-full h-full opacity-10 pointer-events-none">
+                    <div class="absolute top-[-10%] left-[-10%] w-96 h-96 bg-white rounded-full mix-blend-overlay filter blur-3xl"></div>
+                    <div class="absolute bottom-[-10%] right-[-10%] w-96 h-96 bg-emerald-300 rounded-full mix-blend-overlay filter blur-3xl"></div>
+                </div>
+
+                <div class="z-10 flex flex-col items-center">
+                    <div class="bg-white/20 p-4 rounded-full mb-6 backdrop-blur-sm shadow-inner">
+                        <i class="fa-solid fa-book-quran text-5xl md:text-6xl text-emerald-50"></i>
+                    </div>
+                    <h2 class="text-xs md:text-sm tracking-[0.3em] uppercase text-emerald-200 mb-4 font-semibold">E-Book Digital Interaktif</h2>
+                    <h1 class="text-4xl md:text-6xl font-bold mb-6 leading-tight font-serif drop-shadow-lg">ETIKA LINGKUNGAN <br/><span class="text-emerald-300">DALAM PERSPEKTIF HADIS</span></h1>
+                    <div class="w-24 h-1 bg-emerald-400 rounded-full mb-8"></div>
+                    
+                    <p class="text-lg md:text-xl text-emerald-100 font-light max-w-2xl leading-relaxed mb-10">
+                        Menggali kebijaksanaan ekologis dari sabda-sabda Rasulullah SAW sebagai pedoman menjaga harmoni alam semesta.
+                    </p>
+
+                    <div class="bg-emerald-900/50 px-8 py-4 rounded-2xl border border-emerald-700/50 backdrop-blur-md">
+                        <p class="text-sm text-emerald-300 mb-1">Dirancang Oleh:</p>
+                        <p class="text-xl font-semibold tracking-wide">Thufail Shidqi Abdillah</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="page-baba" class="page-content hidden max-w-4xl mx-auto pb-12">
+            <div class="mb-10 text-center md:text-left">
+                <span class="text-emerald-600 font-bold tracking-wider text-sm uppercase">Bagian Pertama</span>
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mt-2">A. RAHMAT BAGI ALAM SEMESTA</h2>
+                <div class="h-1 w-20 bg-emerald-600 mt-4 rounded-full mx-auto md:mx-0"></div>
+            </div>
+
+            <div id="card-a1" class="bg-white p-6 md:p-8 rounded-2xl shadow-sm border border-gray-100 mb-8 transition-shadow hover:shadow-md">
+                <h3 class="text-xl font-bold text-emerald-800 mb-6 flex items-center gap-3">
+                    <span class="bg-emerald-100 text-emerald-700 w-8 h-8 flex items-center justify-center rounded-full text-sm">1</span> 
+                    Kesaksian Alam
+                </h3>
+                
+                <p class="txt-ayat">
+                    حَدَّثَنَا الْفَضْلُ بْنُ سَهْلٍ أَبُو الْعَبَّاسِ الْأَعْرَجُ الْبَغْدَادِيُّ حَدَّثَنَا عَبْدُ الرَّحْمَنِ بْنُ غَزْوَانَ أَبُو نُوحٍ أَخْبَرَنَا يُونُسُ بْنُ أَبِي إِسْحَقَ عَنْ أَبِي بَكْرِ بْنِ أَبِي مُوسَى عَنْ أَبِيهِ قَالَ خَرَجَ أَبُو طَالِبٍ إِلَى الشَّامِ وَخَرَجَ مَعَهُ النَّبِيُّ صَلَّى اللَّهُ عَلَيْهِ وَسَلَّمَ فِي أَشْيَاخٍ مِنْ قُرَيْشٍ فَلَمَّا أَشْرَفُوا عَلَى الرَّاهِبِ هَبَطُوا فَحَلُّوا رِحَالَهُمْ فَخَرَجَ إِلَيْهِمْ الرَّاهِبُ وَكَانُوا قَبْلَ ذَلِكَ يَمُرُّونَ بِهِ فَلَا يَخْرُجُ إِلَيْهِمْ وَلَا يَلْتَفِتُ قَالَ فَهُمْ يَحُلُّونَ رِحَالَهُمْ فَجَعَلَ يَتَخَلَّلُهُمْ الرَّاهِبُ حَتَّى جَاءَ فَأَخَذَ بِيَدِ رَسُولِ اللَّهِ صَلَّى اللَّهُ عَلَيْهِ وَسَلَّمَ قَالَ هَذَا سَيِّدُ الْعَالَمِينَ هَذَا رَسُولُ رَبِّ الْعَالَمِينَ يَبْعَثُهُ اللَّهُ رَحْمَةً لِلْعَالَمِينَ فَقَالَ لَهُ أَشْيَاخٌ مِنْ قُرَيْشٍ مَا عِلْمُكَ فَقَالَ إِنَّكُمْ حِينَ أَشْرَفْتُمْ مِنْ الْعَقَبَةِ لَمْ يَبْقَ شَجَرٌ وَلَا حَجَرٌ إِلَّا خَرَّ سَاجِدًا وَلَا يَسْجُدَانِ إِلَّا لِنَبِيٍّ وَإِنِّي أَعْرِفُهُ بِخَاتَمِ النُّبُوَّةِ أَسْفَلَ مِنْ غُضْرُوفِ كَتِفِهِ مِثْلَ التُّفَّاحَةِ ثُمَّ رَجَعَ فَصَنَعَ لَهُمْ طَعَامًا فَلَمَّا أَتَاهُمْ بِهِ وَكَانَ هُوَ فِي رِعْيَةِ الْإِبِلِ قَالَ أَرْسِلُوا إِلَيْهِ فَأَقْبَلَ وَعَلَيْهِ غَمَامَةٌ تُظِلُّهُ فَلَمَّا دَنَا مِنْ الْقَوْمِ وَجَدَهُمْ قَدْ سَبَقُوهُ إِلَى فَيْءِ الشَّجَرَةِ فَلَمَّا جَلَسَ مَالَ فَيْءُ الشَّجَرَةِ عَلَيْهِ فَقَالَ انْظُرُوا إِلَى فَيْءِ الشَّجَرَةِ مَالَ عَلَيْهِ قَالَ فَبَيْنَمَا هُوَ قَائِمٌ عَلَيْهِمْ وَهُوَ يُنَاشِدُهُمْ أَنْ لَا يَذْهَبُوا بِهِ إِلَى الرُّومِ فَإِنَّ الرُّومَ إِذَا رَأَوْهُ عَرَفُوهُ بِالصِّفَةِ فَيَقْتُلُونَهُ فَالْتَفَتَ فَإِذَا بِسَبْعَةٍ قَدْ أَقْبَلُوا مِنْ الرُّومِ فَاسْتَقْبَلَهُمْ فَقَالَ مَا جَاءَ بِكُمْ قَالُوا جِئْنَا إِنَّ هَذَا النَّبِيَّ خَارِجٌ فِي هَذَا الشَّهْرِ فَلَمْ يَبْقَ طَرِيقٌ إِلَّا بُعِثَ إِلَيْهِ بِأُنَاسٍ وَإِنَّا قَدْ أُخْبِرْنَا خَبَرَهُ بُعِثْنَا إِلَى طَرِيقِكَ هَذَا فَقَالَ هَلْ خَلْفَكُمْ أَحَدٌ هُوَ خَيْرٌ مِنْكُمْ قَالُوا إِنَّمَا أُخْبِرْنَا خَبَرَهُ بِطَرِيقِكَ هَذَا قَالَ أَفَرَأَيْتُمْ أَمْرًا أَرَادَ اللَّهُ أَنْ يَقْضِيَهُ هَلْ يَسْتَطِيعُ أَحَدٌ مِنْ النَّاسِ رَدَّهُ قَالُوا لَا قَالَ فَبَايَعُوهُ وَأَقَامُوا مَعَهُ قَالَ أَنْشُدُكُمْ بِاللَّهِ أَيُّكُمْ وَلِيُّهُ قَالُوا أَبُو طَالِبٍ فَلَمْ يَزَلْ يُنَاشِدُهُ حَتَّى رَدَّهُ أَبُو طَالِبٍ وَبَعَثَ مَعَهُ أَبُو بَكْرٍ بِلَالًا وَزَوَّدَهُ الرَّاهِبُ مِنْ الْكَعْكِ وَالزَّيْتِ قَالَ أَبُو عِيسَى هَذَا حَدِيثٌ حَسَنٌ غَرِيبٌ لَا نَعْرِفُهُ إِلَّا مِنْ هَذَا الْوَجْهِ
+                </p>
+                <hr class="my-6 border-gray-100">
+                <p class="txt-terjemah">
+                    Telah menceritakan kepada kami Al Fadhl bin Sahl Abu Al Abbas Al A'raj Al Baghdadi telah menceritakan kepada kami Abdurrahman bin Ghazwan Abu Nuh telah mengabarkan kepada kami Yunus bin Abu Ishaq dari Abu Bakr bin Abu Musa dari ayahnya dia berkata; "Abu Thalib dan Nabi shallallahu 'alaihi wasallam keluar menuju negeri Syam (untuk berniaga) bersama dengan pembesar-pembesar Quraisy, ketika mereka menjumpai seorang rahib, mereka singgah dan berhenti dari perjalanan mereka, tiba-tiba seorang Rahib keluar menemui mereka, padahal sebelum itu, rahib tersebut tidak pernah keluar walaupun ada sekelompok orang melewatinya, Abu Musa berkata; "Maka mereka meletakkan perbekalan mereka, kemudian Rahib itu menyibak jalan mereka sampai datang (di hadapan) beliau, sambil memegang tangan Rasulullah shallallahu 'alaihi wasallam, Rahib itu berkata; "Orang ini akan menjadi pemimpin semesta alam, anak ini akan menjadi utusan Rab semesta alam dan akan di utus oleh Allah sebagai rahmat bagi seluruh alam." Maka pembesar Quraisy berkata; "Dari mana anda tahu hal itu?" Rahib menjawab; "Sebenarnya semenjak kalian tiba di Aqabah, tidak ada bebatuan dan pepohonan pun melainkan mereka tunduk sujud, mereka tidak sujud melainkan kepada seorang Nabi, aku juga dapat mengetahui dari stempel kenabian yang berada di bagian bawah tulang rawan bahunya yang menyerupai buah apel." Kemudian Rahib itu kembali dan menjamu mereka dengan makanan, ketika Rahib itu mendatangi rombongan Quraisy yang mengikutsertakan nabinya, sedangkan nabi berada diantara rombongan unta, Rahib itu berkata; "Tolong utuslah beberapa orang untuk menjemputnya." Beberapa saat kemudian nabi datang dengan dinaungi sekumpulan awan di atas beliau. Ajaib, ketika Rahib itu mendekati rombongan, ia temukan mereka tengah berebutan mencari perlindungan bayang-bayang pohon. Anehnya ketika nabi duduk, justru bayang-bayang pohon itu mendekati beliau, kontan saja si Rahib mengatakan 'Coba kalian perhatikan, bayang-bayang pohon justru mendekati beliau'. (Kata Abu Musa), ketika sang rahib berdiri menghadap rombongan, ia memberi peringatan ' Maaf, hendaknya rombongan ini tidak meneruskan perjalanan menuju Romawi. Sebab kalaulah mereka melihatnya, tentu mereka mengetahuinya dengan tanda-tandanya, dan tentu mereka akan membunuhnya.' Ketika sang rahib menoleh, ternyata ada tujuh orang yang baru pulang dari Romawi dan menemui rombongan. Rahib bertanya kepada mereka; 'Apa yang mendorong kalian datang kemari? Rombongan itu menjawab; 'Begini, kami berangkat karena mendengar seorang nabi telah diutus di bulan ini, karenanya tak ada jalan lagi bagi kami selain beberapa orang harus diutus untuk menemuinya. Kami telah diberi tahu beritanya. Karenanya kami diutus dan berangkat melalui jalan yang akan kalian lewati ini.' Si rahib lantas berujar kepada rombongan Makkah; 'Mungkin kalian punya pendapat yang Allah akan memutuskannya?, Ataukah kalian hendak mengembalikan si bocah ini (maksudnya Muhammad) ke Makkah?." Jawab mereka; "Wahh, sepertinya tidak ada." Selanjutnya rombongan itu berbaiat kepada si rahib dan tinggal bersamanya beberapa waktu. Kata rahib; "Siapa walinya anak ini? Mereka menjawab; "Abu Thalib". Si rahib tiada henti-hentinya menasehati Abu Thalib hingga ia mau mengembalikan Muhammad (yang ketika itu belum menjadi nabi). Abu Bakar memerintahkan Bilal untuk mengawaninya, sedang si rahib memberinya bekal berupa kerupuk dan minyak." Abu Isa mengatakan; "Derajat hadits ini hasan gharib, kami tidak mengenalnya selain dari jalur ini."
+                </p>
+            </div>
+
+            <div id="card-a2" class="bg-white p-6 md:p-8 rounded-2xl shadow-sm border border-gray-100 mb-8 transition-shadow hover:shadow-md">
+                <h3 class="text-xl font-bold text-emerald-800 mb-4 flex items-center gap-3">
+                    <span class="bg-emerald-100 text-emerald-700 w-8 h-8 flex items-center justify-center rounded-full text-sm">2</span> 
+                    Batasan dalam Menilai Takdir
+                </h3>
+                <p class="txt-ayat">
+                    حَدَّثَنَا مُوسَى بْنُ إِسْمَاعِيلَ حَدَّثَنَا إِبْرَاهِيمُ بْنُ سَعْدٍ أَخْبَرَنَا ابْنُ شِهَابٍ عَنْ خَارِجَةَ بْنِ زَيْدِ بْنِ ثَابِتٍ أَنَّ أُمَّ الْعَلَاءِ امْرَأَةً مِنْ نِسَائِهِمْ بَايَعَتْ النَّبِيَّ صَلَّى اللَّهُ عَلَيْهِ وَسَلَّمَ أَخْبَرَتْهُ أَنَّ عُثْمَانَ بْنَ مَظْعُونٍ طَارَ لَهُمْ فِي السُّكْنَى حِينَ اقْتَرَعَتْ الْأَنْصَارُ عَلَى سُكْنَى الْمُهَاجِرِينَ قَالَتْ أُمُّ الْعَلَاءِ فَاشْتَكَى عُثْمَانُ عِنْدَنَا فَمَرَّضْتُهُ حَتَّى تُوُفِّيَ وَجَعَلْنَاهُ فِي أَثْوَابِهِ فَدَخَلَ عَلَيْنَا النَّبِيُّ صَلَّى اللَّهُ عَلَيْهِ وَسَلَّمَ فَقُلْتُ رَحْمَةُ اللَّهِ عَلَيْكَ أَبَا السَّائِبِ شَهَادَتِي عَلَيْكَ لَقَدْ أَكْرَمَكَ اللَّهُ فَقَالَ النَّبِيُّ صَلَّى اللَّهُ عَلَيْهِ وَسَلَّمَ وَمَا يُدْرِيكِ أَنَّ اللَّهَ أَكْرَمَهُ قَالَتْ قُلْتُ لَا أَدْرِي بِأَبِي أَنْتَ وَأُمِّي يَا رَسُولَ اللَّهِ فَمَنْ قَالَ أَمَّا هُوَ فَقَدْ جَاءَهُ وَاللَّهِ الْيَقِينُ وَاللَّهِ إِنِّي لَأَرْجُو لَهُ الْخَيْرَ وَمَا أَدْرِي وَاللَّهِ وَأَنَا رَسُولُ اللَّه مَا يُفْعَلُ بِي قَالَتْ فَوَاللَّهِ لَا أُزَكِّي أَحَدًا بَعْدَهُ قَالَتْ فَأَحْزَنَنِي ذَلِكَ فَنِمْتُ فَرِيتُ لِعُثْمَانَ بْنِ مَظْعُونٍ عَيْنًا تَجْرِي فَجِئْتُ رَسُولَ اللَّهِ صَلَّى اللَّهُ عَلَيْهِ وَسَلَّمَ فَأَخْبَرْتُهُ فَقَالَ ذَلِكِ عَمَلُهُ
+                </p>
+                <hr class="my-6 border-gray-100">
+                <p class="txt-terjemah">
+                    Telah menceritakan kepada kami Musa bin Isma'il telah menceritakan kepada kami Ibrahim bin Sa'ad telah mengabarkan kepada kami Ibnu Syihab dari Kharijah bin Zaid bin Tsabit bahwa Ummu Al 'Ala' seorang wanita dari mereka yang telah berba'iat kepada Nabi shallallahu 'alaihi wasallam mengabarkan kepadanya, bahwa 'Utsman bin Madz'un keluar menemui mereka ketika orang-orang Anshar tengah mengadakan undian tentang tempat tinggal orang-orang Muhajirin." Ummul 'Ala' berkata, "Selanjutnya Utsman bin Madz'un mengeluhkan sakitnya di sisi kami kemudian kami merawatnya sampai ketika dia meninggal kami menyelimutinya dengan bajunya, kemudian datanglah Rasulullah shallallahu 'alaihi wasallam kepada kami, dan akupun berkata, "Semoga rahmat Allah senantiasa di curahkan kepadamu wahai Abu As Sa'ib. Aku bersaksi atas kamu. Sungguh, Allah telah memuliakanmu." Rasulullah shallallahu 'alaihi wasallam kemudian bersabda: "Dari mana kamu tahu bahwa Allah telah memuliakannya?" Ummul 'Ala` berkata, "Maka aku menjawab, "Bapak dan ibuku sebagai tebusanmu wahai Rasulullah, Aku tidak tahu." Lantas Rasulullah shallallahu 'alaihi wasallam bersabda: "Kematian dari Rabbnya telah datang kepadanya, aku berharap dia mendapatkan kebaikan. Demi Allah, meskipun aku seorang Nabi, aku tidak tahu apa yang akan aku dapatkan." Ummu 'Ala` lalu berkata, "Demi Allah, aku tidak akan lagi memuji seseorang setelahnya, sehingga hal itu membuat aku sedih. Kemudian aku tidur dan diperlihatkan kepadaku dalam mimpi bahwa 'Utsman mendapatkan mata air yang mengalir, aku lalu bergegas mendatangi Rasulullah shallallahu 'alaihi wasallam dan menceritakan hal itu kepadanya, beliau bersabda: "Itu adalah amalan Utsman."
+                </p>
+            </div>
+        </div>
+
+        <div id="page-babb" class="page-content hidden max-w-4xl mx-auto pb-12">
+            <div class="mb-10 text-center md:text-left">
+                <span class="text-emerald-600 font-bold tracking-wider text-sm uppercase">Bagian Kedua</span>
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mt-2">B. KETERHUBUNGAN MANUSIA DAN ALAM</h2>
+                <div class="h-1 w-20 bg-emerald-600 mt-4 rounded-full mx-auto md:mx-0"></div>
+            </div>
+
+            <div id="card-b1" class="bg-white p-6 md:p-8 rounded-2xl shadow-sm border border-gray-100 mb-8">
+                <h3 class="text-xl font-bold text-emerald-800 mb-6 flex items-center gap-3">
+                    <span class="bg-emerald-100 text-emerald-700 w-8 h-8 flex items-center justify-center rounded-full text-sm">1</span> 
+                    Etika dan Batasan dalam Berbohong
+                </h3>
+                <p class="txt-ayat">
+                    حَدَّثَنَا الرَّبِيعُ بْنُ سُلَيْمَانَ الْجِيزِيُّ حَدَّثَنَا أَبُو الْأَسْوَدِ عَنْ نَافِعٍ يَعْنِي ابْنَ يَزِيدَ عَنْ ابْنِ الْهَادِي أَنَّ عَبْدَ الْوَهَّابِ بْنَ أَبِي بَكْرٍ حَدَّثَهُ عَنْ ابْنِ شِهَابٍ عَنْ حُمَيْدِ بْنِ عَبْدِ الرَّحْمَنِ عَنْ أُمِّهِ أُمِّ كُلْثُومٍ بِنْتِ عُقْبَةَ قَالَتْ مَا سَمِعْتُ رَسُولَ اللَّهِ صَلَّى اللَّهُ عَلَيْهِ وَسَلَّمَ يُرَخِّصُ فِي شَيْءٍ مِنْ الْكَذِبِ إِلَّا فِي ثَلَاثٍ كَانَ رَسُولُ اللَّهِ صَلَّى اللَّهُ عَلَيْهِ وَسَلَّمَ يَقُولُ لَا أَعُدُّهُ كَاذِبًا الرَّجُلُ يُصْلِحُ بَيْنَ النَّاسِ يَقُولُ الْقَوْلَ وَلَا يُرِيدُ بِهِ إِلَّا الْإِصْلَاحَ وَالرَّجُلُ يَقُولُ فِي الْحَرْبِ وَالرَّجُلُ يُحَدِّثُ امْرَأَتَهُ وَالْمَرْأَةُ تُحَدِّثُ زَوْجَهَا
+                </p>
+                <hr class="my-6 border-gray-100">
+                <p class="txt-terjemah">
+                    Telah menceritakan kepada kami Ar Rabi' bin Sulaiman Al Jizi berkata, telah menceritakan kepada kami Abul Aswad dari nafi' -maksudnya Nafi' bin Yazid- dari Ibnul Hadi bahwa Abdul Wahhab bin Abu Bakr menceritakan kepadanya, dari Ibnu Syihab dari Humaid bin 'Abdurrahman dari ibunya Ummu Kultsum binti Uqbah ia berkata, "Aku tidak pernah mendengar Rasulullah shallallahu 'alaihi wasallam memberi keringanan untuk berbohong kecuali pada tiga tempat. Rasulullah shallallahu 'alaihi wasallam mengatakan: "Aku tidak menganggapnya sebagai seorang pembohong; seorang laki-laki yang memperbaiki hubungan antara manusia. Ia mengatakan suatu perkataan (bohong), namun ia tidak bermaksud dengan perkataan itu kecuali untuk mendamaikan. Seorang laki-laki yang berbohong dalam peperangan. Dan seorang laki-laki yang berbohong kepada isteri atau isteri yang berbohong kepada suami (untuk kebaikan)."
+                </p>
+            </div>
+
+            <div id="card-b2" class="bg-white p-6 md:p-8 rounded-2xl shadow-sm border border-gray-100 mb-8">
+                <h3 class="text-xl font-bold text-emerald-800 mb-6 flex items-center gap-3">
+                    <span class="bg-emerald-100 text-emerald-700 w-8 h-8 flex items-center justify-center rounded-full text-sm">2</span> 
+                    Tubuh Bicara dan Alam Menjawab
+                </h3>
+                <p class="txt-ayat">
+                    حَدَّثَنَا أَبُو زَكَرِيَّا يَحْيَى بْنُ دُرُسْتَ الْبَصْرِيُّ حَدَّثَنَا حَمَّادُ بْنُ زَيْدٍ عَنْ أَيُّوبَ عَنْ نَافِعٍ عَنْ ابْنِ عُمَرَ قَالَ حَمَّادٌ وَهُوَ عِنْدَنَا مَرْفُوعٌ { يَوْمَ يَقُومُ النَّاسُ لِرَبِّ الْعَالَمِينَ } قَالَ يَقُومُونَ فِي الرَّشْحِ إِلَى أَنْصَافِ آذَانِهِمْ قَالَ أَبُو عِيسَى هَذَا حَدِيثٌ حَسَنٌ صَحِيحٌ حَدَّثَنَا هَنَّادٌ حَدَّثَنَا عِيسَى بْنُ يُونُسَ عَنْ ابْنِ عَوْنٍ عَنْ نَافِعٍ عَنْ ابْنِ عُمَرَ عَنْ النَّبِيِّ صَلَّى اللَّهُ عَلَيْهِ وَسَلَّمَ نَحْوَهُ
+                </p>
+                <hr class="my-6 border-gray-100">
+                <p class="txt-terjemah">
+                    Telah menceritakan kepada kami Abu Zakariya Yahya bin Durusta Al Bashri telah menceritakan kepada kami Hammad bin Zaid dari Ayyub dari Nafi' dari Ibnu Umar, berkata Hammad: Itu menurut kami marfu': Pada hari manusia berdiri untuk Rabb semesta alam. Ia berkata: Mereka berdiri dalam keringat hingga mencapai pertengahan telinga mereka. Berkata Abu Isa: Hadits ini hasan shahih. Telah menceritakan kepada kami Hannad telah menceritakan kepada kami 'Isa bin Yunus dari Ibnu 'Aun dari Nafi' dari Ibnu Umar dari nabi Shallallahu 'alaihi wa Salam sepertinya.
+                </p>
+            </div>
+        </div>
+
+        <div id="page-babc" class="page-content hidden max-w-4xl mx-auto pb-12">
+            <div class="mb-10 text-center md:text-left">
+                <span class="text-emerald-600 font-bold tracking-wider text-sm uppercase">Bagian Ketiga</span>
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mt-2">C. PEPOHONAN DAN TANAMAN</h2>
+                <div class="h-1 w-20 bg-emerald-600 mt-4 rounded-full mx-auto md:mx-0"></div>
+            </div>
+
+            <div id="card-c1" class="bg-white p-6 md:p-8 rounded-2xl shadow-sm border border-gray-100 mb-8">
+                <h3 class="text-xl font-bold text-emerald-800 mb-6 flex items-center gap-3"><span class="bg-emerald-100 text-emerald-700 w-8 h-8 flex items-center justify-center rounded-full text-sm">1</span> Khasiat Kam’ah dan Kurma ‘Ajwah</h3>
+                <p class="txt-ayat">حَدَّثَنَا مُحَمَّدُ بْنُ بَشَّارٍ حَدَّثَنَا أَبُو عَبْدِ الصَّمَدِ حَدَّثَنَا مَطَرٌ الْوَرَّاقُ عَنْ شَهْرِ بْنِ حَوْشَبٍ عَنْ أَبِي هُرَيْرَةَ قَالَ كُنَّا نَتَحَدَّثُ عِنْدَ رَسُولِ اللَّهِ صَلَّى اللَّهُ عَلَيْهِ وَسَلَّمَ فَذَكَرْنَا الْكَمْأَةَ فَقَالُوا هُوَ جُدَرِيُّ الْأَرْضِ فَنُمِيَ الْحَدِيثُ إِلَى رَسُولِ اللَّهِ صَلَّى اللَّهُ عَلَيْهِ وَسَلَّمَ فَقَالَ الْكَمْأَةُ مِنْ الْمَنِّ وَالْعَجْوَةُ مِنْ الْجَنَّةِ وَهِيَ شِفَاءٌ مِنْ السَّمِّ</p>
+                <hr class="my-6 border-gray-100">
+                <p class="txt-terjemah">Telah menceritakan kepada kami Muhammad bin Basysyar telah menceritakan kepada kami Abu 'Abdush Shamad telah menceritakan kepada kami Mathar Al Warraq dari Syahr bin Hausyab dari Abu Hurairah dia berkata, "Kami berbincang-bincang di sisi Rasulullah shallallahu 'alaihi wasallam, lalu kami menyebutkan tentang Al Kam`ah, sebagian sahabat mengatakan, "Kam`ah adalah penyakit cacar di bumi." Ternyata pembicaraan tersebut sampai kepada Rasulullah shallallahu 'alaihi wasallam, maka beliau bersabda: "Kam`ah (sejenis tumbuhan) adalah dari Al Manna dan Ajwah adalah (kurma) dari surga, ia merupakan penawar racun."</p>
+            </div>
+
+            <div id="card-c2" class="bg-white p-6 md:p-8 rounded-2xl shadow-sm border border-gray-100 mb-8">
+                <h3 class="text-xl font-bold text-emerald-800 mb-6 flex items-center gap-3"><span class="bg-emerald-100 text-emerald-700 w-8 h-8 flex items-center justify-center rounded-full text-sm">2</span> Waras, Qisṭ dan Minyak Zaitun</h3>
+                <p class="txt-ayat">حَدَّثَنَا عَبْدُ الرَّحْمَنِ بْنُ عَبْدِ الْوَهَّابِ حَدَّثَنَا يَعْقُوبُ بْنُ إِسْحَقَ حَدَّثَنَا عَبْدُ الرَّحْمَنِ بْنُ مَيْمُونٍ حَدَّثَنِي أَبِي عَنْ زَيْدِ بْنِ أَرْقَمَ قَالَ نَعَتَ رَسُولُ اللَّهِ صَلَّى اللَّهُ عَلَيْهِ وَسَلَّمَ مِنْ ذَاتِ الْجَنْبِ وَرْسًا وَقُسْطًا وَزَيْتًا يُلَدُّ بِهِ</p>
+                <hr class="my-6 border-gray-100">
+                <p class="txt-terjemah">Telah menceritakan kepada kami Abdurrahman bin Abdul Wahab telah menceritakan kepada kami Ya'qub bin Ishaq telah menceritakan kepada kami Abdurrahman bin Maimun telah menceritakan kepadaku Ayahku dari Zaid bin Arqam dia berkata, "Rasulullah shallallahu 'alaihi wasallam menyebutkan wars (sejenis tumbuhan), qusth (kayu hindi) dan minyak zaitun bahwa itu semua dapat mencegah penyakit lambung."</p>
+            </div>
+
+            <div id="card-c3" class="bg-white p-6 md:p-8 rounded-2xl shadow-sm border border-gray-100 mb-8">
+                <h3 class="text-xl font-bold text-emerald-800 mb-6 flex items-center gap-3"><span class="bg-emerald-100 text-emerald-700 w-8 h-8 flex items-center justify-center rounded-full text-sm">3</span> Henna dan Katam</h3>
+                <p class="txt-ayat">حَدَّثَنَا أَبُو بَكْرِ حَدَّثَنَا عَبْدُ اللَّهِ بْنُ إِدْرِيسَ عَنْ الْأَجْلَحِ عَنْ عَبْدِ اللَّهِ بْنِ بُرَيْدَةَ عَنْ أَبِي الْأَسْوَدِ الدَّيْلَمِيِّ عَنْ أَبِي ذَرٍّ قَالَ قَالَ رَسُولُ اللَّهِ صَلَّى اللَّهُ عَلَيْهِ وَسَلَّمَ إِنَّ أَحْسَنَ مَا غَيَّرْتُمْ بِهِ الشَّيْبَ الْحِنَّاءُ وَالْكَتَمُ</p>
+                <hr class="my-6 border-gray-100">
+                <p class="txt-terjemah">Telah menceritakan kepada kami Abu Bakar telah menceritakan kepada kami Abdullah bin Idris dari Al Ajlah dari Abdullah bin Buraidah dari Abu Al Aswad Ad Dailami dari Abu Dzar dia berkata, "Rasulullah shallallahu 'alaihi wasallam bersabda: "Sungguh, sebaik-baik yang kalian gunakan untuk merubah uban adalah pohon pacar (inai) dan katam (sejenis tumbuhan)."</p>
+            </div>
+
+            <div id="card-c4" class="bg-white p-6 md:p-8 rounded-2xl shadow-sm border border-gray-100 mb-8">
+                <h3 class="text-xl font-bold text-emerald-800 mb-6 flex items-center gap-3"><span class="bg-emerald-100 text-emerald-700 w-8 h-8 flex items-center justify-center rounded-full text-sm">4</span> Itsmid untuk Kesehatan Mata dan Rambut</h3>
+                <p class="txt-ayat">حَدَّثَنَا أَبُو بَكْرِ بْنُ أَبِي شَيْبَةَ حَدَّثَنَا عَبْدُ الرَّحِيمِ بْنُ سُلَيْمَانَ عَنْ إِسْمَعِيلَ بْنِ مُسْلِمٍ عَنْ مُحَمَّدِ بْنِ الْمُنْكَدِرِ عَنْ جَابِرٍ قَالَ سَمِعْتُ رَسُولَ اللَّهِ صَلَّى اللَّهُ عَلَيْهِ وَسَلَّمَ يَقُولُ عَلَيْكُمْ بِالْإِثْمِدِ عِنْدَ النَّوْمِ فَإِنَّهُ يَجْلُو الْبَصَرَ وَيُنْبِتُ الشَّعَر</p>
+                <hr class="my-6 border-gray-100">
+                <p class="txt-terjemah">Telah menceritakan kepada kami Abu Bakar bin Abu Syaibah telah menceritakan kepada kami Abdurrahim bin Sulaiman dari Isma'il bin Muslim dari Muhammad bin Al Munkadir dari Jabir dia berkata, "Saya mendengar Rasulullah shallallahu 'alaihi wasallam bersabda: "Hendaknya kalian menggunakan itsmid (semacam tumbuhan untuk celak), sesungguhnya ia dapat memperjelas penglihatan dan menumbuhkan bulu mata."</p>
+            </div>
+        </div>
+
+        <div id="page-babd" class="page-content hidden max-w-4xl mx-auto pb-12">
+            <div class="mb-10 text-center md:text-left">
+                <span class="text-emerald-600 font-bold tracking-wider text-sm uppercase">Bagian Keempat</span>
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mt-2">D. AJUAN MENANAM TUMBUHAN</h2>
+                <div class="h-1 w-20 bg-emerald-600 mt-4 rounded-full mx-auto md:mx-0"></div>
+            </div>
+
+            <div id="card-d1" class="bg-white p-6 md:p-8 rounded-2xl shadow-sm border border-gray-100 mb-8">
+                <h3 class="text-xl font-bold text-emerald-800 mb-6 flex items-center gap-3"><span class="bg-emerald-100 text-emerald-700 w-8 h-8 flex items-center justify-center rounded-full text-sm">1</span> Keutamaan Menanam dan Sedekah yang Mengalir</h3>
+                <p class="txt-ayat">حَدَّثَنَا قُتَيْبَةُ بْنُ سَعِيدٍ حَدَّثَنَا أَبُو عَوَانَةَ ح و حَدَّثَنِي عَبْدُ الرَّحْمَنِ بْنُ الْمُبَارَكِ حَدَّثَنَا أَبُو عَوَانَةَ عَنْ قَتَادَةَ عَنْ أَنَسِ بْنِ مَالِكٍ رَضِيَ اللَّهُ عَنْهُ قَالَ قَالَ رَسُولُ اللَّهِ صَلَّى اللَّهُ عَلَيْهِ وَسَلَّمَ مَا مِنْ مُسْلِمٍ يَغْرِسُ غَرْسًا أَوْ يَزْرَعُ زَرْعًا فَيَأْكُلُ مِنْهُ طَيْرٌ أَوْ إِنْسَانٌ أَوْ بَهِيمَةٌ إِلَّا كَانَ لَهُ بِهِ صَدَقَةٌ وَقَالَ لَنَا مُسْلِمٌ حَدَّثَنَا أَبَانُ حَدَّثَنَا قَتَادَةُ حَدَّثَنَا أَنَسٌ عَنْ النَّبِيِّ صَلَّى اللَّهُ عَلَيْهِ وَسَلَّمَ</p>
+                <hr class="my-6 border-gray-100">
+                <p class="txt-terjemah">Telah menceritakan kepada kami Qutaibah bin Sa'id telah menceritakan kepada kami Abu 'Awanah. Dan diriwayatkan pula telah menceritakan kepada saya 'Abdurrahman bin Al Mubarak telah menceritakan kepada kami Abu 'Awanah dari Qatadah dari Anas bin Malik radliallahu 'anhu berkata; Rasulullah shallallahu 'alaihi wasallam bersabda: "Tidaklah seorang muslimpun yang bercocok tanam atau menanam satu tanaman lalu tanaman itu dimakan oleh burung atau menusia atau hewan melainkan itu menjadi shadaqah baginya". Dan berkata, kewpada kami Muslim telah menceritakan kepada saya Aban telah menceritakan kepada kami Qatadah telah menceritakan kepada kami Anas dari Nabi shallallahu 'alaihi wasallam.</p>
+            </div>
+
+            <div id="card-d2" class="bg-white p-6 md:p-8 rounded-2xl shadow-sm border border-gray-100 mb-8">
+                <h3 class="text-xl font-bold text-emerald-800 mb-6 flex items-center gap-3"><span class="bg-emerald-100 text-emerald-700 w-8 h-8 flex items-center justify-center rounded-full text-sm">2</span> Manfaatkanlah Tanahmu</h3>
+                <p class="txt-ayat">حَدَّثَنَا إِسْمَعِيلُ بْنُ مَسْعُودٍ قَالَ حَدَّثَنَا خَالِدُ بْنُ الْحَارِثِ قَالَ حَدَّثَنَا عَبْدُ الْمَلِكِ عَنْ عَطَاءٍ عَنْ جَابِرٍ أَنَّ رَسُولَ اللَّهِ صَلَّى اللَّهُ عَلَيْهِ وَسَلَّمَ قَالَ مَنْ كَانَ لَهُ أَرْضٌ فَلْيَزْرَعْهَا فَإِنْ عَجَزَ أَنْ يَزْرَعَهَا فَلْيَمْنَحْهَا أَخَاهُ الْمُسْلِمَ وَلَا يُزْرِعْهَا إِيَّاهُ</p>
+                <hr class="my-6 border-gray-100">
+                <p class="txt-terjemah">Telah mengabarkan kepada kami Isma'il bin Mas'ud telah menceritakan kepada kami Khalid bin Al Harits telah menceritakan kepada kami Abdul Malik dari 'Atho` dari Jabir bahwa Rasulullah shallallahu 'alaihi wasallam bersabda: "Barang siapa yang memiliki tanah maka hendaknya ia menanaminya apabila tidak mampu untuk menanaminya maka hendaknya ia memberikannya kepada saudaranya yang muslim dan jangan memintanya untuk menanam untuk dirinya."</p>
+            </div>
+
+            <div id="card-d3" class="bg-white p-6 md:p-8 rounded-2xl shadow-sm border border-gray-100 mb-8">
+                <h3 class="text-xl font-bold text-emerald-800 mb-6 flex items-center gap-3"><span class="bg-emerald-100 text-emerald-700 w-8 h-8 flex items-center justify-center rounded-full text-sm">3</span> Amanah dalam Bertani</h3>
+                <p class="txt-ayat">حَدَّثَنَا إِبْرَاهِيمُ بْنُ الْمُنْذِرِ حَدَّثَنَا أَبُو ضَمْرَةَ حَدَّثَنَا مُوسَى بْنُ عُقْبَةَ عَنْ نَافِعٍ عَنْ عَبْدِ اللَّهِ بْنِ عُمَرَ رَضِيَ اللَّهُ عَنْهُمَا عَنْ النَّبِيِّ صَلَّى اللَّهُ عَلَيْهِ وَسَلَّمَ قَالَ بَيْنَمَا ثَلَاثَةُ نَفَرٍ يَمْشُونَ أَخَذَهُمْ الْمَطَرُ فَأَوَوْا إِلَى غَارٍ فِي جَبَلٍ فَانْحَطَّتْ عَلَى فَمِ غَارِهِمْ صَخْرَةٌ مِنْ الْجَبَلِ فَانْطَبَقَتْ عَلَيْهِمْ فَقَالَ بَعْضُهُمْ لِبَعْضٍ انْظُرُوا أَعْمَالًا عَمِلْتُمُوهَا صَالِحَةً لِلَّهِ فَادْعُوا اللَّهَ بِهَا لَعَلَّهُ يُفَرِّجُهَا عَنْكُمْ قَالَ أَحَدُهُمْ اللَّهُمَّ إِنَّهُ كَانَ لِي وَالِدَانِ شَيْخَانِ كَبِيرَانِ وَلِي صِبْيَةٌ صِغَارٌ كُنْتُ أَرْعَى عَلَيْهِمْ فَإِذَا رُحْتُ عَلَيْهِمْ حَلَبْتُ فَبَدَأْتُ بِوَالِدَيَّ أَسْقِيهِمَا قَبْلَ بَنِيَّ وَإِنِّي اسْتَأْخَرْتُ ذَاتَ يَوْمٍ فَلَمْ آتِ حَتَّى أَمْسَيْتُ فَوَجَدْتُهُمَا نَامَا فَحَلَبْتُ كَمَا كُنْتُ أَحْلُبُ فَقُمْتُ عِنْدَ رُءُوسِهِمَا أَكْرَهُ أَنْ أُوقِظَهُمَا وَأَكْرَهُ أَنْ أَسْقِيَ الصِّبْيَةَ وَالصِّبْيَةُ يَتَضَاغَوْنَ عِنْدَ قَدَمَيَّ حَتَّى طَلَعَ الْفَجْرُ فَإِنْ كُنْتَ تَعْلَمُ أَنِّي فَعَلْتُهُ ابْتِغَاءَ وَجْهِكَ فَافْرُجْ لَنَا فَرْجَةً نَرَى مِنْهَا السَّمَاءَ فَفَرَجَ اللَّهُ فَرَأَوْا السَّمَاءَ وَقَالَ الْآخَرُ اللَّهُمَّ إِنَّهَا كَانَتْ لِي بِنْتُ عَمٍّ أَحْبَبْتُهَا كَأَشَدِّ مَا يُحِبُّ الرِّجَالُ النِّسَاءَ فَطَلَبْتُ مِنْهَا فَأَبَتْ عَلَيَّ حَتَّى أَتَيْتُهَا بِمِائَةِ دِينَارٍ فَبَغَيْتُ حَتَّى جَمَعْتُهَا فَلَمَّا وَقَعْتُ بَيْنَ رِجْلَيْهَا قَالَتْ يَا عَبْدَ اللَّهِ اتَّقِ اللَّهَ وَلَا تَفْتَحْ الْخَاتَمَ إِلَّا بِحَقِّهِ فَقُمْتُ فَإِنْ كُنْتَ تَعْلَمُ أَنِّي فَعَلْتُهُ ابْتِغَاءَ وَجْهِكَ فَافْرُجْ عَنَّا فَرْجَةً فَفَرَجَ وَقَالَ الثَّالِثُ اللَّهُمَّ إِنِّي اسْتَأْجَرْتُ أَجِيرًا بِفَرَقِ أَرُزٍّ فَلَمَّا قَضَى عَمَلَهُ قَالَ أَعْطِنِي حَقِّي فَعَرَضْتُ عَلَيْهِ فَرَغِبَ عَنْهُ فَلَمْ أَزَلْ أَزْرَعُهُ حَتَّى جَمَعْتُ مِنْهُ بَقَرًا وَرَاعِيَهَا فَجَاءَنِي فَقَالَ اتَّقِ اللَّهَ فَقُلْتُ اذْهَبْ إِلَى ذَلِكَ الْبَقَرِ وَرُعَاتِهَا فَخُذْ فَقَالَ اتَّقِ اللَّهَ وَلَا تَسْتَهْزِئْ بِي فَقُلْتُ إِنِّي لَا أَسْتَهْزِئُ بِكَ فَخُذْ فَأَخَذَهُ فَإِنْ كُنْتَ تَعْلَمُ أَنِّي فَعَلْتُ ذَلِكَ ابْتِغَاءَ وَجْهِكَ فَافْرُجْ مَا بَقِيَ فَفَرَجَ اللَّهُ قَالَ أَبُو عَبْد اللَّهِ وَقَالَ إِسْمَاعِيلُ بْنُ إِبْرَاهِيمَ بْنِ عُقْبَةَ عَنْ نَافِعٍ فَسَعَيْتُ</p>
+                <hr class="my-6 border-gray-100">
+                <p class="txt-terjemah">Telah menceritakan kepada kami Ibrahim bin Al Mundzir telah menceritakan kepada kami Abu Dhamrah telah menceritakan kepada kami Musa bin 'Uqbah dari Nafi' dari 'Abdullah bin 'Umar radliallahu 'anhuma dari Nabi shallallahu 'alaihi wasallam berkata: "Ada tiga orang yang sedang bepergian lalu hujan turun hingga akhirnya mereka masuk ke dalam gua pada suatu gunung. Lalu sebuah batu yang jatuh dari gunung di depan mulut gua sehingga menutupi mereka. Satu sama lain diantara berkata; Perhatikanlah amal amal yang pernah kalian amalkan semata karena Allah lalu berdoalah dengan perantaraan amal amal tersebut semoga Allah Ta'ala berkenan membukakan batu tersebut untuk kalian. Seorang diantara mereka berkata; "Ya Allah, aku memiliki kedua orangtua yang sudah renta dan aku juga mempunyai anak yang masih kecil dimana aku mengembalakan hewan untuk makan minum mereka. Apabila aku sudah selesai aku memeras susu dan aku mulai memberikan susu tersebut untuk kedua orang tua, aku mendahuluinya untuk kedua orangtuaku sebelum anakku. Pada suatu hari aku terlambat pulang hingga malam dan aku dapati kedanya sudah tertidur. Maka aku mencoba menawarkan susu kepada keduanya, aku hampiri di dekat keduanya dan aku khawatir dapat membangunkannya dan aku juga tidak mau memberikan susu ini untuk anak kecilku padahal dia sedang menangis dibawah kakiku meminta minum hingga terbit fajar. Ya Allah seandainya Engkau mengetahui apa yang aku kerjakan itu semata mencari ridhoMu, maka bukakanlah celah batu ini sehingga dari nya kami dapat melihat matahari. Maka Allah membukakan batu itu hinga mereka sedikit dapat melihat matahari". Kemudian berkata, yang lain: "Ya Allah, bersamaku ada putri pamanku yang merupakan orang yang paling aku cintai sebagaimana umumnya laki-laki mencintai wanita. Suatu hari aku menginginkannya namun dia menolak aku hingga kemudian aku datang kepadanya denagn membawa seratus dua puluh dinar agar aku bisa berbuat mesum dan menyetubuinya. Ketika aku sudah berada diantara kedua kakinya dia berkata; "Wahai 'Abdullah, bertaqwalah kepada Allah dan janganlah kamu renggut keperawanan kecuali dengan cara yang haq. Maka bangkit. Ya Allah seandainya Engkau mengetahui apa yang aku kerjakan itu semata mencari ridhoMu, maka bukakanlah celah pintu gua ini untuk kami. Maka batu itu kembali terbuka. Kemudian orang yang ketiga berkata: Ya Allah aku pernah memperkerjakan orang pada ladang padi. Ketika sudah selesai dia meminta upahnya, aku memberikannya namun dia enggan menerimanya. Sejak itu aku meneruskan bertani, hingga aku dapat mengumpulkan harta yang banyak dari hasil yang aku kembangkan tersebut orang itu datang kepadaku lalu berkata "Bertaqwalah kamu kepada Allah". Aku katakan: "Pergilah lihat sapi itu beserta pengembalanya dan ambillah". Dia berkata: "Bertaqwalah kepada Allah dan jangan mengolok-olok aku!" Aku katakan: "Aku tidak mengolok-olok kamu, ambillah. Maka dia mengambilnya. Jika aku kerjakan itu semata mencari ridhomu, maka bukakanlah celah batu gua yang masih tersisa". Maka Allah membukakannya. Berkata, Abu 'Abdullah dan berkata, Isma'il bin Ibrahim bin 'Uqbah dari Nafi': makna Fabaghaitu maksudnya fasa'aitu (Aku bersungguh-sunguh untuk menyetubuinya).</p>
+            </div>
+        </div>
+
+        <div id="page-babe" class="page-content hidden max-w-4xl mx-auto pb-12">
+            <div class="mb-10 text-center md:text-left">
+                <span class="text-emerald-600 font-bold tracking-wider text-sm uppercase">Bagian Kelima</span>
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mt-2">E. KASIH SAYANG RASUL TERHADAP HEWAN</h2>
+                <div class="h-1 w-20 bg-emerald-600 mt-4 rounded-full mx-auto md:mx-0"></div>
+            </div>
+
+            <div id="card-e1" class="bg-white p-6 md:p-8 rounded-2xl shadow-sm border border-gray-100 mb-8">
+                <h3 class="text-xl font-bold text-emerald-800 mb-6 flex items-center gap-3"><span class="bg-emerald-100 text-emerald-700 w-8 h-8 flex items-center justify-center rounded-full text-sm">1</span> Hadiah dan Kehidupan Rasulullah</h3>
+                <p class="txt-ayat">أَخْبَرَنَا عَمْرُو بْنُ عَلِيٍّ قَالَ حَدَّثَنَا يَحْيَى قَالَ حَدَّثَنَا إِسْمَعِيلُ قَالَ حَدَّثَنَا عَامِرٌ عَنْ مَسْرُوقٍ عَنْ عَائِشَةَ قَالَتْ إِنْ كُنْتُ لَأَفْتِلُ قَلَائِدَ هَدْيِ رَسُولِ اللَّهِ صَلَّى اللَّهُ عَلَيْهِ وَسَلَّمَ ثُمَّ يُقِيمُ وَلَا يُحْرِمُ</p>
+                <hr class="my-6 border-gray-100">
+                <p class="txt-terjemah">Telah mengabarkan kepada kami Qutaibah, ia berkata; telah menceritakan kepada kami Abu Al Ahwash dari Abu Ishaq dari Al Aswad dari Aisyah, ia berkata; sungguh saya pernah menganyam beberapa kalung hewan kurban Rasulullah shallallahu 'alaihi wasallam, dan hewan kurban tersebut dikeluarkan dalam keadaan diberi kalung, dan Rasulullah shallallahu 'alaihi wasallam tidak menahan dari para isterinya.</p>
+            </div>
+
+            <div id="card-e2" class="bg-white p-6 md:p-8 rounded-2xl shadow-sm border border-gray-100 mb-8">
+                <h3 class="text-xl font-bold text-emerald-800 mb-6 flex items-center gap-3"><span class="bg-emerald-100 text-emerald-700 w-8 h-8 flex items-center justify-center rounded-full text-sm">2</span> Pahala Menolong Makhluk Hidup</h3>
+                <p class="txt-ayat">حَدَّثَنَا إِسْمَاعِيلُ حَدَّثَنِي مَالِكٌ عَنْ سُمَيٍّ مَوْلَى أَبِي بَكْرٍ عَنْ أَبِي صَالِحٍ السَّمَّانِ عَنْ أَبِي هُرَيْرَةَ أَنَّ رَسُولَ اللَّهِ صَلَّى اللَّهُ عَلَيْهِ وَسَلَّمَ قَالَ بَيْنَمَا رَجُلٌ يَمْشِي بِطَرِيقٍ اشْتَدَّ عَلَيْهِ الْعَطَشُ فَوَجَدَ بِئْرًا فَنَزَلَ فِيهَا فَشَرِبَ ثُمَّ خَرَجَ فَإِذَا كَلْبٌ يَلْهَثُ يَأْكُلُ الثَّرَى مِنْ الْعَطَشِ فَقَالَ الرَّجُلُ لَقَدْ بَلَغَ هَذَا الْكَلْبَ مِنْ الْعَطَشِ مِثْلُ الَّذِي كَانَ بَلَغَ بِي فَنَزَلَ الْبِئْرَ فَمَلَأَ خُفَّهُ ثُمَّ أَمْسَكَهُ بِفِيهِ فَسَقَى الْكَلْبَ فَشَكَرَ اللَّهُ لَهُ فَغَفَرَ لَهُ قَالُوا يَا رَسُولَ اللَّهِ وَإِنَّ لَنَا فِي الْبَهَائِمِ أَجْرًا فَقَالَ نَعَمْ فِي كُلِّ ذَاتِ كَبِدٍ رَطْبَةٍ أَجْرٌ</p>
+                <hr class="my-6 border-gray-100">
+                <p class="txt-terjemah">Telah menceritakan kepada kami Isma'il telah menceritakan kepadaku Malik dari Sumayya bekas budak Abu Bakr, dari Abu Shalih As Samman dari Abu Hurairah bahwa Rasulullah shallallahu 'alaihi wasallam bersabda : "Pada suatu ketika ada seorang laki-laki sedang berjalan melalui suatu jalan, lalu dia merasa sangat kehausan. Kebetulan dia menemukan sebuah sumur, maka dia turun ke sumur itu untuk minum. Setelah keluar dari sumur, dia melihat seekor anjing menjulurkan lidahnya menjilat-jilat tanah karena kehausan. Orang itu berkata dalam hatinya; 'Alangkah hausnya anjing itu, seperti yang baru ku alami.' Lalu dia turun kembali ke sumur, kemudian dia menciduk air dengan sepatunya, dibawanya ke atas dan diminumkannya kepada anjing itu. Maka Allah berterima kasih kepada orang itu (diterima-Nya amalnya) dan diampuni-Nya dosanya.' Para sahabat bertanya; 'Ya, Rasulullah! Dapat pahalakah kami bila menyayangi hewan-hewan ini?' Jawab beliau: 'Ya, setiap menyayangi makhluk hidup adalah berpahala."</p>
+            </div>
+
+            <div id="card-e3" class="bg-white p-6 md:p-8 rounded-2xl shadow-sm border border-gray-100 mb-8">
+                <h3 class="text-xl font-bold text-emerald-800 mb-6 flex items-center gap-3"><span class="bg-emerald-100 text-emerald-700 w-8 h-8 flex items-center justify-center rounded-full text-sm">3</span> Penyerahan Arnab yang Disembelih</h3>
+                <p class="txt-ayat">حَدَّثَنَا مُحَمَّدُ بْنُ الْمُثَنَّى حَدَّثَنَا مُحَمَّدُ بْنُ جَعْفَرٍ حَدَّثَنَا شُعْبَةُ عَنْ هِشَامِ بْنِ زَيْدٍ عَنْ أَنَسِ بْنِ مَالِكٍ قَالَ مَرَرْنَا فَاسْتَنْفَجْنَا أَرْنَبًا بِمَرِّ الظَّهْرَانِ فَسَعَوْا عَلَيْهِ فَلَغَبُوا قَالَ فَسَعَيْتُ حَتَّى أَدْرَكْتُهَا فَأَتَيْتُ بِهَا أَبَا طَلْحَةَ فَذَبَحَهَا فَبَعَثَ بِوَرِكِهَا وَفَخِذَيْهَا إِلَى رَسُولِ اللَّهِ صَلَّى اللَّهُ عَلَيْهِ وَسَلَّمَ فَأَتَيْتُ بِهَا رَسُولَ اللَّهِ صَلَّى اللَّهُ عَلَيْهِ وَسَلَّمَ فَقَبِلَهُ و حَدَّثَنِيهِ زُهَيْرُ بْنُ حَرْبٍ حَدَّثَنَا يَحْيَى بْنُ سَعِيدٍ ح و حَدَّثَنِي يَحْيَى بْنُ حَبِيبٍ حَدَّثَنَا خَالِدٌ يَعْنِي ابْنَ الْحَارِثِ كِلَاهُمَا عَنْ شُعْبَةَ بِهَذَا الْإِسْنَادِ وَفِي حَدِيثِ يَحْيَى بِوَرِكِهَا أَوْ فَخِذَيْهَا</p>
+                <hr class="my-6 border-gray-100">
+                <p class="txt-terjemah">Telah menceritakan kepada kami Muhammad bin Al Mutsanna telah menceritakan kepada kami Muhammad bin Ja'far telah menceritakan kepada kami Syu'bah dari Hisyam bin Zaid dari Anas bin Malik dia berkata, "Pada suatu ketika kami lewat di Marru Zhahran (nama tempat), tiba-tiba kami dikagetkan oleh seekor kelinci, lalu kami kejar kelinci tersebut sampai mereka kelelahan." Anas melanjutkan, "Saya juga turut mengejarnya sampai dapat, lantas saya membawanya kepada Abu Thalhah, kemudian dia menyembelihnya dan mengirimkan kedua pahanya kepada Rasulullah shallallahu 'alaihi wasallam. Aku lalu membawanya ke hadapan Rasulullah shallallahu 'alaihi wasallam dan beliau pun menerimanya." Dan telah menceritakan kepadaku Zuhair bin Harb telah menceritakan kepada kami Yahya bin Sa'id. (dalam jalur lain disebutkan) Telah menceritakan kepadaku Yahya bin Habib telah menceritakan kepada kami Khalid -yaitu Ibnu Al Harits- keduanya dari Syu'bah dengan isnad ini. Dan dalam hadits Yahya disebutkan, "Dengan kedua pahanya."</p>
+            </div>
+
+            <div id="card-e4" class="bg-white p-6 md:p-8 rounded-2xl shadow-sm border border-gray-100 mb-8">
+                <h3 class="text-xl font-bold text-emerald-800 mb-6 flex items-center gap-3"><span class="bg-emerald-100 text-emerald-700 w-8 h-8 flex items-center justify-center rounded-full text-sm">4</span> Ketentuan Islam tentang Barang yang Ditemukan (Luqatha)</h3>
+                <p class="txt-ayat">حَدَّثَنَا إِسْمَاعِيلُ حَدَّثَنَا مَالِكٌ عَنْ رَبِيعَةَ بْنِ أَبِي عَبْدِ الرَّحْمَنِ عَنْ يَزِيدَ مَوْلَى الْمُنْبَعِثِ عَنْ زَيْدِ بْنِ خَالِدٍ الْجُهَنِيِّ رَضِيَ اللَّهُ عَنْهُ قَالَ جَاءَ رَجُلٌ إِلَى رَسُولِ اللَّهِ صَلَّى اللَّهُ عَلَيْهِ وَسَلَّمَ فَسَأَلَهُ عَنْ اللُّقَطَةِ فَقَالَ اعْرِفْ عِفَاصَهَا وَوِكَاءَهَا ثُمَّ عَرِّفْهَا سَنَةً فَإِنْ جَاءَ صَاحِبُهَا وَإِلَّا فَشَأْنَكَ بِهَا قَالَ فَضَالَّةُ الْغَنَمِ قَالَ هِيَ لَكَ أَوْ لِأَخِيكَ أَوْ لِلذِّئْبِ قَالَ فَضَالَّةُ الْإِبِلِ قَالَ مَا لَكَ وَلَهَا مَعَهَا سِقَاؤُهَا وَحِذَاؤُهَا تَرِدُ الْمَاءَ وَتَأْكُلُ الشَّجَرَ حَتَّى يَلْقَاهَا رَبُّهَا</p>
+                <hr class="my-6 border-gray-100">
+                <p class="txt-terjemah">Telah menceritakan kepada kami Isma'il telah menceritakan kepada kami Malik dari Rabi'ah bin Abi 'Abdurrahman dari Yazid, maula Al Munba'its dari Zaid bin Khalid Al Juhaniy radliallahu 'anhu berkata; "Datang seorang laki-laki kepada Rasulullah shallallahu 'alaihi wasallam lalu bertanya kepada Beliau tentang barang temuan. Maka Beliau bersabda: "Kamu kenali tutup bungkus dan talinya kemudian umumkan selama satu tahun dan jika datang pemiliknya maka berikanlah namun bila tidak maka menjadi kewenanganmu dengan barang tersebut". Orang itu bertanya lagi tentang hukum bila menemukan kambing. Maka Beliau menjawab: "Itu untuk kamu atau saudaramu atau serigala". Lalu orang itu bertanya lagi tentang menemukan unta. Maka Beliau menjawab: "Bagaimana kamu ini, padahal unta itu mempunyai kantong air (yang terisi air) dan sepatunya sehingga dia bisa hilir mudik mencari air dan makan rerumputan hingga pemiliknya menemukannya".</p>
+            </div>
+        </div>
+
+        <div id="page-penulis" class="page-content hidden max-w-3xl mx-auto pb-12">
+            <div class="mb-10 text-center md:text-left">
+                <span class="text-emerald-600 font-bold tracking-wider text-sm uppercase">Identitas</span>
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mt-2">Profil Pengembang</h2>
+                <div class="h-1 w-20 bg-emerald-600 mt-4 rounded-full mx-auto md:mx-0"></div>
+            </div>
+
+            <div class="bg-white rounded-3xl overflow-hidden shadow-lg border border-gray-100 flex flex-col md:flex-row">
+                <div class="bg-emerald-800 text-white p-8 md:w-2/5 flex flex-col items-center justify-center text-center">
+                    <div class="w-32 h-32 bg-emerald-100 text-emerald-800 rounded-full flex items-center justify-center text-4xl font-bold shadow-inner mb-6">
+                        TS
+                    </div>
+                    <h3 class="text-2xl font-bold mb-1">Thufail Shidqi Abdillah</h3>
+                    <p class="text-emerald-200 text-sm font-medium tracking-wide mb-6">PENGEMBANG DIGITAL</p>
+                    
+                    <div class="flex gap-4">
+                        <a href="mailto:Thufailshidqi@gmail.com" class="w-10 h-10 rounded-full bg-emerald-700 hover:bg-emerald-600 flex items-center justify-center transition-colors">
+                            <i class="fa-solid fa-envelope"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 rounded-full bg-emerald-700 hover:bg-emerald-600 flex items-center justify-center transition-colors">
+                            <i class="fa-brands fa-instagram"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 rounded-full bg-emerald-700 hover:bg-emerald-600 flex items-center justify-center transition-colors">
+                            <i class="fa-brands fa-whatsapp"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="p-8 md:w-3/5 bg-slate-50">
+                    <div class="space-y-6">
+                        <div>
+                            <h4 class="text-emerald-800 font-bold flex items-center gap-2 mb-3 border-b border-gray-200 pb-2">
+                                <i class="fa-solid fa-graduation-cap"></i> Pendidikan
+                            </h4>
+                            <p class="text-gray-800 font-medium">Universitas Islam Negeri (UIN)<br>Sultan Maulana Hasanuddin Banten</p>
+                            <p class="text-gray-500 text-sm mt-1">Program Studi Ilmu Hadist - Semester 2</p>
+                        </div>
+                        
+                        <div>
+                            <h4 class="text-emerald-800 font-bold flex items-center gap-2 mb-3 border-b border-gray-200 pb-2">
+                                <i class="fa-solid fa-language"></i> Kemahiran Bahasa
+                            </h4>
+                            <ul class="space-y-1 text-gray-700 text-sm">
+                                <li><span class="font-medium">Bahasa Indonesia:</span> Asli / Native</li>
+                                <li><span class="font-medium">Bahasa Arab:</span> Menengah (Intermediet)</li>
+                                <li><span class="font-medium">Bahasa Inggris:</span> Dasar (Basic)</li>
+                            </ul>
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <h4 class="text-emerald-800 font-bold flex items-center gap-2 mb-3 border-b border-gray-200 pb-2">
+                                    <i class="fa-solid fa-basketball"></i> Hobi
+                                </h4>
+                                <p class="text-gray-700 text-sm">Olahraga Basket</p>
+                            </div>
+                            <div>
+                                <h4 class="text-emerald-800 font-bold flex items-center gap-2 mb-3 border-b border-gray-200 pb-2">
+                                    <i class="fa-solid fa-phone"></i> Kontak
+                                </h4>
+                                <p class="text-gray-700 text-sm font-mono">082311010310</p>
+                                <p class="text-gray-700 text-sm">@thufailshidqiabdillah</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <script>
+        // Tampilkan halaman home secara default saat dimuat
+        document.addEventListener("DOMContentLoaded", () => {
+            bukaKonten('page-home');
+        });
+
+        // Logika Toggle Menu Dropdown (Tanpa Reload & Klik Base)
+        function toggleSubmenu(event, menuId) {
+            // Hentikan propagasi event
+            if(event) event.stopPropagation();
+
+            const submenu = document.getElementById(menuId);
+            const icon = document.getElementById('icon-' + menuId);
+            
+            if (submenu.classList.contains('hidden')) {
+                submenu.classList.remove('hidden');
+                if(icon) {
+                    icon.classList.remove('fa-chevron-right', 'fa-angle-right');
+                    icon.classList.add('fa-chevron-down');
+                }
+            } else {
+                submenu.classList.add('hidden');
+                if(icon) {
+                    icon.classList.remove('fa-chevron-down');
+                    if(menuId.includes('bab')) {
+                        icon.classList.add('fa-angle-right');
+                    } else {
+                        icon.classList.add('fa-chevron-right');
+                    }
+                }
+            }
+        }
+
+        // Buka konten utama
+        function bukaKonten(pageId) {
+            // Sembunyikan semua halaman
+            const pages = document.querySelectorAll('.page-content');
+            pages.forEach(page => {
+                page.classList.add('hidden');
+            });
+            
+            // Tampilkan halaman target
+            const targetPage = document.getElementById(pageId);
+            if (targetPage) {
+                targetPage.classList.remove('hidden');
+            }
+
+            // Tutup sidebar di perangkat mobile setelah navigasi
+            if (window.innerWidth < 768) {
+                tutupSidebar();
+            }
+            
+            // Auto scroll ke atas
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Buka konten lalu scroll ke bagian card spesifik (sub-menu Heading 2)
+        function bukaKontenDanScroll(pageId, cardId) {
+            bukaKonten(pageId);
+            
+            // Beri jeda sedikit agar render halaman selesai sebelum mengambil offset
+            setTimeout(() => {
+                const cardElement = document.getElementById(cardId);
+                if (cardElement) {
+                    const headerOffset = 80;
+                    const elementPosition = cardElement.getBoundingClientRect().top;
+                    const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+                    
+                    window.scrollTo({
+                        top: offsetPosition,
+                        behavior: "smooth"
+                    });
+                }
+            }, 150);
+        }
+
+        // Manajemen Sidebar Mobile
+        const sidebar = document.getElementById('sidebar');
+        
+        function toggleSidebar(event) {
+            if(event) event.stopPropagation();
+            sidebar.classList.toggle('-translate-x-full');
+        }
+
+        function tutupSidebar() {
+            sidebar.classList.add('-translate-x-full');
+        }
+
+        // Klik di luar sidebar untuk menutupnya di mode mobile
+        document.addEventListener('click', function(event) {
+            const burgerBtn = document.getElementById('burger-btn');
+            
+            if (window.innerWidth < 768) {
+                if (!sidebar.contains(event.target) && !burgerBtn.contains(event.target)) {
+                    tutupSidebar();
+                }
+            }
+        });
+    </script>
+</body>
+</html>
